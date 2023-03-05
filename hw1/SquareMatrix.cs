@@ -33,14 +33,25 @@ namespace GaussTask
             set => _content[i][j] = value;
         }
         public override string ToString() => string.Join("\n", Enumerable.Range(0, Rows).
-            Select(j => RowToString(j))) + $"\nVector:\n{string.Join(" ",Enumerable.Range(0, Rows).Select(j => this[j,Rows]))}";
+            Select(j => RowToString(j))) +
+            $"\nVector:\n{string.Join(" ",Enumerable.Range(0, Rows).Select(j => this[j,Rows]))}"+
+            $"\nAnswers:\n{string.Join(" ",_junctions.Select(j => j))}";
         private string RowToString(int i) => string.Join(" ", Enumerable.Range(0, Rows).
             Select(j => this[i, j]));
 
         public void FindJunctions()
         {
-            
-            foreach (var i in _junctions) Console.WriteLine(i);
+            double substractor=0;
+            for (int i = Rows - 1;i >= 0; --i)
+            {
+                for (int j = Rows - 1;j >= 0; j--)
+                {
+                    if (j!=i)
+                    substractor -=_content[i][j] * _junctions[j];
+                }
+                _junctions[i] = (_content[i][Rows]+substractor)/_content[i][i];
+                substractor = 0;
+            }
         }
         public double ToTriangularForm()
         {
@@ -48,11 +59,7 @@ namespace GaussTask
             for (int i = 0; i < Rows - 1; i++)
             {
                 key = MaxElemColumn(i);
-                if (Math.Abs(key) < c_zeroValue)
-                {
-                    Console.WriteLine("Matrix is degenerate!");
-                    return 0.0;
-                }
+                if (Math.Abs(key) < c_zeroValue) return 0.0;
                 if (_content[i][i] != key)
                 {
                     SwapRows(key, i);
