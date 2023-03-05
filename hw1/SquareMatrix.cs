@@ -14,6 +14,7 @@ namespace GaussTask
     {
         private const double c_zeroValue = 0.000001;
         private double[][] _content;
+        private readonly double[][] _copyContent;
         private double[] _junctions;
         public double[][] Content => _content;
         public SquareMatrix(int n)
@@ -21,11 +22,13 @@ namespace GaussTask
             _content = new double[n][];
             for (int i = 0; i < n; ++i) _content[i] = new double[n + 1];
             _junctions = new double[n];
+            _copyContent = new double[n][];
         }
         public SquareMatrix(string? pathMatrix, int n) : this(n)
         {
             if (pathMatrix == null) throw new ArgumentNullException("The path isn`t specified!");
             _content = File.ReadAllLines(pathMatrix).Select(l => l.Split(' ').Select(str => double.Parse(str)).ToArray()).ToArray();
+            _copyContent = (double[][])_content.Clone();
         }
         public int Rows => _content.Length;
         public double this[int i, int j]
@@ -74,7 +77,8 @@ namespace GaussTask
 
                 }
             }
-            return (Enumerable.Range(0, Rows).Select(i => _content[i][i]).Aggregate((x, y) => x * y)) * Math.Pow(-1, swaps);
+            return (Enumerable.Range(0, Rows).
+                Select(i => _content[i][i]).Aggregate((x, y) => x * y)) * Math.Pow(-1, swaps);
 
         }
         public void SwapRows(double key, int position)
@@ -91,10 +95,8 @@ namespace GaussTask
         public void CheckResult()
         {
             Console.WriteLine("Checking:");
-            foreach (var line in _content)
-            {
-                Console.WriteLine($"{(Enumerable.Range(0, Rows).Select(i => line[i] * _junctions[i]).Sum())}");
-            }
+            foreach (var line in _copyContent) Console.WriteLine($"{(Enumerable.Range(0, Rows).
+                Select(i => line[i] * _junctions[i]).Sum())}");
         }
     }
 }
