@@ -53,7 +53,7 @@ namespace GaussTask
                 }
                 for (int j = i + 1; j < Rows; ++j)
                 {
-                     List<double> row = Enumerable.Range(i,Rows-i).Select(k => (_content[j][k]) - (_content[j][i] / key) * _content[i][k]).ToList();
+                     List<double> row = Enumerable.Range(i,Rows+1-i).Select(k => (_content[j][k]) - (_content[j][i] / key) * _content[i][k]).ToList();
                      row.InsertRange(0, new double[i]);
                     _content[j] = row.ToArray();
 
