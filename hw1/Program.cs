@@ -5,3 +5,4 @@ double _determinate = matrix.ToTriangularForm();
 Console.WriteLine(_determinate == 0 ? "Matrix is degenerate" : $"Determinate:\n{_determinate}");
 matrix.FindJunctions();
 Console.WriteLine(matrix.ToString());
+matrix.CheckResult();
