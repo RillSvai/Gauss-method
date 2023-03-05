@@ -13,11 +13,13 @@ namespace GaussTask
     {
         private const double c_zeroValue = 0.000001;
         private double [][] _content;
+        private double[] _junctions;
         public double [][] Content => _content;
         public SquareMatrix(int n) 
         {
             _content = new double[n][];
             for (int i = 0; i < n;++i) _content[i] = new double[n+1];
+            _junctions = new double[n];
         }
         public SquareMatrix(string? pathMatrix, int n) : this(n) 
         {
@@ -31,10 +33,15 @@ namespace GaussTask
             set => _content[i][j] = value;
         }
         public override string ToString() => string.Join("\n", Enumerable.Range(0, Rows).
-            Select(j => RowToString(j))) + $"\nVector: {string.Join(" ",Enumerable.Range(0, Rows).Select(j => this[j,Rows]))}";
+            Select(j => RowToString(j))) + $"\nVector:\n{string.Join(" ",Enumerable.Range(0, Rows).Select(j => this[j,Rows]))}";
         private string RowToString(int i) => string.Join(" ", Enumerable.Range(0, Rows).
             Select(j => this[i, j]));
 
+        public void FindJunctions()
+        {
+            
+            foreach (var i in _junctions) Console.WriteLine(i);
+        }
         public double ToTriangularForm()
         {
             double key = 0, swaps = 0;
