@@ -1,6 +1,6 @@
 ﻿using GaussTask;
 
-SquareMatrix matrix = new SquareMatrix(@"C:\Kiril\C#\num-methods\hw1\hw1\matrix.txt", 4);
+SquareMatrix matrix = new SquareMatrix(@"C:\Kiril\C#\num-methods\hw1\hw1\matrix.txt",4);
 Console.WriteLine($"=====Start matrix=====\n{matrix.ToString()}\n\n=====Transformed matrix=====\n");
 double _determinate = matrix.ToTriangularForm();
 if (_determinate == 0) 
